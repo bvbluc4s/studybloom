@@ -1,3 +1,16 @@
-print("Hello World!")
-name = "UnarmingLine216"
-print(f"My name is {name}!")
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "message": "Backend is working!"}
