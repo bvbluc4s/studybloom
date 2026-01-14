@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 function Materias() {
     const [materias, setMaterias] = useState([]);
     const [nomeMateria, setNomeMateria] = useState("");
+    const [dificuldade, setDificuldade] = useState("media");
 
     useEffect(() => {
         fetch("http://127.0.0.1:8000/materias")
@@ -15,7 +16,8 @@ function Materias() {
 
         const novaMateria = {
             id: Date.now(),
-            nome: nomeMateria
+            nome: nomeMateria,
+            dificuldade: dificuldade
             
         };
 
@@ -27,6 +29,7 @@ function Materias() {
 
         setMaterias([...materias, novaMateria]);
         setNomeMateria("");
+        setDificuldade("media");
     }
 
     async function removerMateria(id) {
@@ -38,6 +41,8 @@ function Materias() {
     }
 
     return (
+
+        
         <div>
             <h1>Matérias</h1>
 
@@ -48,16 +53,14 @@ function Materias() {
                 onChange={(e) => setNomeMateria(e.target.value)}
             />
 
-            <div>
-                <input 
-                    type="radio"
-                    id="apple"
-                    name="fruit"
-                    value="apple"
-
-
-                />
-            </div>
+            <label>Dificuldade</label>
+            <select 
+            value={dificuldade}
+            onChange={(e) => setDificuldade(e.target.value)}>
+            <option value="Baixa">Baixa</option>
+            <option value="Média">Média</option>
+            <option value="Alta">Alta</option>
+            </select>
 
             <button onClick={adicionarMateria}>
                 Adicionar
@@ -66,7 +69,7 @@ function Materias() {
             <ul>
                 {materias.map((materia) => (
                     <li key={materia.id}>
-                        {materia.nome}
+                        {materia.nome} — {materia.dificuldade}
                         <button onClick={() => removerMateria(materia.id)}>
                             ❌
                         </button>
@@ -78,5 +81,6 @@ function Materias() {
         </div>
     );
 }
+
 
 export default Materias;
