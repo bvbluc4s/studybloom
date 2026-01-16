@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function Materias() {
     const [materias, setMaterias] = useState([]);
     const [nomeMateria, setNomeMateria] = useState("");
-    const [dificuldade, setDificuldade] = useState("media");
+    const [dificuldade, setDificuldade] = useState("Baixa");
 
     useEffect(() => {
         fetch("http://127.0.0.1:8000/materias")
@@ -17,7 +17,7 @@ function Materias() {
         const novaMateria = {
             id: Date.now(),
             nome: nomeMateria,
-            dificuldade: dificuldade
+            Materiadificuldade: dificuldade
             
         };
 
@@ -29,7 +29,7 @@ function Materias() {
 
         setMaterias([...materias, novaMateria]);
         setNomeMateria("");
-        setDificuldade("media");
+        setDificuldade("Baixa");
     }
 
     async function removerMateria(id) {
@@ -69,7 +69,7 @@ function Materias() {
             <ul>
                 {materias.map((materia) => (
                     <li key={materia.id}>
-                        {materia.nome} — {materia.dificuldade}
+                        {materia.nome} — {materia.Materiadificuldade}
                         <button onClick={() => removerMateria(materia.id)}>
                             ❌
                         </button>
