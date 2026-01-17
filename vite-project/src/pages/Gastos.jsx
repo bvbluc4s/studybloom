@@ -5,7 +5,7 @@ function Gastos() {
     const [gastos, setGastos] = useState([]);
     const [nomeGasto, setNomeGasto] = useState("");
     const [valorGasto, setValor] = useState(0);
-    const [categoria, setCategoria] = useState("transporte");
+    const [categoria, setCategoria] = useState("Transporte");
 
     useEffect(() => {
         fetch("http://127.0.0.1:8000/gastos")
@@ -23,6 +23,7 @@ function Gastos() {
             gastoCategoria: categoria
         };
 
+
         await fetch("http://127.0.0.1:8000/gastos", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -31,7 +32,7 @@ function Gastos() {
 
         setGastos([...gastos, novoGasto]);
         setNomeGasto("");
-        setValor("");
+        setValor("0");
         setCategoria("transporte");
     };
     async function removerGasto(id) {
@@ -40,7 +41,12 @@ function Gastos() {
         await fetch(`http://127.0.0.1:8000/gastos/${id}`, {
             method: "DELETE",
         });
+
     }
+
+    const totalGastos = gastos.reduce((total, gasto) => {
+        return total + gasto.valor;
+    }, 0);
 
     return(
         <div className="page-content">
@@ -66,6 +72,7 @@ function Gastos() {
                 <option value="Comida">Comida</option>
                 <option value="Lazer">Lazer</option>
                 <option value="Estudo">Estudo</option>
+                <option value="Remédio">Remédio</option>
                 <option value="Outros">Outros</option>
 
             </select>
@@ -80,6 +87,9 @@ function Gastos() {
                     </li>
                 ))}
             </ul>
+            <p>Total em gastos: R${totalGastos.toFixed(2)}</p>
+
+            
         </div>
     );
 }
