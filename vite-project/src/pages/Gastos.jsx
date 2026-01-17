@@ -14,35 +14,35 @@ function Gastos() {
     }, []);
 
     async function adicionarGasto() {
-        if (nomeGasto.trim() === "") return;
+    if (nomeGasto.trim() === "") return;
 
-        const novoGasto = {
-            id: Date.now(),
-            nome: nomeGasto,
-            valor: parseFloat(valorGasto),
-            gastoCategoria: categoria
-        };
-
-
-        await fetch("http://127.0.0.1:8000/gastos", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(novoGasto)
-        })
-
-        setGastos([...gastos, novoGasto]);
-        setNomeGasto("");
-        setValor("0");
-        setCategoria("transporte");
+    const novoGasto = {
+        nome: nomeGasto,
+        valor: parseFloat(valorGasto),
+        gastoCategoria: categoria
     };
+
+    const response = await fetch("http://127.0.0.1:8000/gastos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(novoGasto)
+    });
+
+    const gastoCriado = await response.json();
+
+    setGastos([...gastos, gastoCriado]);
+    setNomeGasto("");
+    setValor("0");
+    setCategoria("Transporte");
+}
+
     async function removerGasto(id) {
-        setGastos(gastos.filter(g => g.id !== id));
+    await fetch(`http://127.0.0.1:8000/gastos/${id}`, {
+        method: "DELETE",
+    });
 
-        await fetch(`http://127.0.0.1:8000/gastos/${id}`, {
-            method: "DELETE",
-        });
-
-    }
+    setGastos(gastos.filter(g => g.id !== id));
+}
 
     const totalGastos = gastos.reduce((total, gasto) => {
         return total + gasto.valor;
@@ -63,7 +63,7 @@ function Gastos() {
                 type="number" step="0.01" placeholder="0.00" value={valorGasto} onChange={(e) => setValor(e.target.value)}
             />
 
-            <label>Categoria</label>
+            <label>Categoria </label>
             <select
                 value={categoria}
                 onChange={(e) => setCategoria(e.target.value)}
@@ -76,7 +76,7 @@ function Gastos() {
                 <option value="Outros">Outros</option>
 
             </select>
-            <button onClick={adicionarGasto}>Adicionar</button>
+            <button onClick={adicionarGasto}>Adicionar birle</button>
 
             <ul>
                 {gastos.map((gasto) => (
