@@ -76,7 +76,7 @@ function Gastos() {
                 <option value="Outros">Outros</option>
 
             </select>
-            <button onClick={adicionarGasto}>Adicionar birle</button>
+            <button onClick={adicionarGasto}>Adicionar</button>
 
             <ul>
                 {gastos.map((gasto) => (
