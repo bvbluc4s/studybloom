@@ -40,6 +40,25 @@ function Materias() {
         });
     }
 
+    async function limparLista() {
+        if (!confirm("Tem certeza que quer limpar a lista de matérias?")) return;
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/materias`, {
+                method: "DELETE",
+            })
+        if (response.ok) {
+            setMaterias([]);
+            alert("Matérias apagadas com sucesso!")
+        } else {
+            console.error("Erro ao limpar matérias")
+        }} catch (error) {
+            console.error("Erro de rede", error)
+        };
+
+
+    }
+
     return (
 
         
@@ -78,9 +97,12 @@ function Materias() {
                 ))}
             </ul>
 
+            <button onClick={() => limparLista()}>Limpar lista de matérias</button>
+
         </div>
     );
-}
 
+}
+    
 
 export default Materias;

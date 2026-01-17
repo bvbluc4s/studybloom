@@ -81,6 +81,16 @@ def deletar_materia(materia_id: int):
     conn2.commit()
     return {"message": "matéria deletada com sucesso!"}
 
+@app.delete("/materias")
+def deletar_materias():
+    try:
+        cursor2.execute("DELETE FROM materias")
+        conn2.commit()
+        return {"message": "Todas as matérias foram deletadas"}
+    except Exception as e:
+        print(f"Erro: {e}")
+        return {"error": "Falha ao deletar matérias"}, 500
+
 
 # GASTOS
 
@@ -119,3 +129,14 @@ def deletar_gasto(gasto_id: int):
     cursor.execute("DELETE FROM gastos WHERE id = ?", (gasto_id,))
     conn.commit()
     return {"message": "gasto deletado com sucesso!"}
+
+
+@app.delete("/gastos")
+def deletar_gastos():
+    try:
+        cursor.execute("DELETE  FROM gastos")
+        conn.commit()
+        return {"message": "Todos os gastos foram deletados"}
+    except Exception as e:
+        print(f"Erro {e}")
+        return {"error": "Falha ao deletar gastos"}, 500

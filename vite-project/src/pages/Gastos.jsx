@@ -48,6 +48,25 @@ function Gastos() {
         return total + gasto.valor;
     }, 0);
 
+    async function limparLista() {
+
+        if (!confirm("Tem certeza que quer apagar todos os gastos?")) return;
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/gastos/`, {
+                method: "DELETE",
+            })
+       if (response.ok) {
+        setGastos([]);
+        alert("Gastos apagado com sucesso!")
+       } else {
+        console.error("Erro ao limpar gastos")
+       }
+    } catch (error) {
+        console.error("Erro de rede:", error);
+    };
+    }
+
     return(
         <div className="page-content">
             <h1>Gastos</h1>
@@ -88,10 +107,11 @@ function Gastos() {
                 ))}
             </ul>
             <p>Total em gastos: R${totalGastos.toFixed(2)}</p>
+            <button onClick={() => limparLista()}>Limpar lista</button>
 
             
         </div>
     );
 }
 
-export default Gastos
+export default Gastos;
