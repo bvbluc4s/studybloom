@@ -4,6 +4,7 @@ function Materias() {
     const [materias, setMaterias] = useState([]);
     const [nomeMateria, setNomeMateria] = useState("");
     const [dificuldade, setDificuldade] = useState("Baixa");
+    const [filtro, setFiltro] = useState("Todas")
 
     useEffect(() => {
         fetch("http://127.0.0.1:8000/materias")
@@ -14,9 +15,10 @@ function Materias() {
     async function adicionarMateria() {
         if (nomeMateria.trim() === "") return;
 
+        const materiaFormatada = nomeMateria.trim().charAt(0).toUpperCase() + nomeMateria.trim().slice(1)
         const novaMateria = {
             id: Date.now(),
-            nome: nomeMateria,
+            nome: materiaFormatada,
             Materiadificuldade: dificuldade
             
         };
@@ -41,7 +43,7 @@ function Materias() {
     }
 
     async function limparLista() {
-        if (!confirm("Tem certeza que quer limpar a lista de matérias?")) return;
+        if (!confirm("Tem certeza que deseja limpar a lista de matérias?")) return;
 
         try {
             const response = await fetch(`http://127.0.0.1:8000/materias`, {
@@ -56,8 +58,12 @@ function Materias() {
             console.error("Erro de rede", error)
         };
 
-
     }
+
+    const materiasFiltradas = materias.filter(item => {
+        if (filtro === "Todas") return true;
+        return item.Materiadificuldade === filtro;
+    })
 
     return (
 
@@ -85,8 +91,17 @@ function Materias() {
                 Adicionar
             </button>
 
+            <p>Filtrar por dificuldade: </p>
+            <select value={filtro} onChange={(e) => setFiltro(e.target.value)}>
+                <option value="Todas">Mostrar Todas</option>
+                <option value="Baixa">Baixa</option>
+                <option value="Média">Média</option>
+                <option value="Alta">Alta</option>
+
+            </select>
+
             <ul>
-                {materias.map((materia) => (
+                {materiasFiltradas.map((materia) => (
                     <li key={materia.id}>
                         {materia.nome} — {materia.Materiadificuldade}
                         <button onClick={() => removerMateria(materia.id)}>

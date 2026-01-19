@@ -6,6 +6,7 @@ function Gastos() {
     const [nomeGasto, setNomeGasto] = useState("");
     const [valorGasto, setValor] = useState(0);
     const [categoria, setCategoria] = useState("Transporte");
+    const [ordem, setOrdem] = useState("recente")
 
     useEffect(() => {
         fetch("http://127.0.0.1:8000/gastos")
@@ -16,8 +17,9 @@ function Gastos() {
     async function adicionarGasto() {
     if (nomeGasto.trim() === "") return;
 
+    const nomeFormatado = nomeGasto.trim().charAt(0).toUpperCase() + nomeGasto.trim().slice(1)
     const novoGasto = {
-        nome: nomeGasto,
+        nome: nomeFormatado,
         valor: parseFloat(valorGasto),
         gastoCategoria: categoria
     };
@@ -50,7 +52,7 @@ function Gastos() {
 
     async function limparLista() {
 
-        if (!confirm("Tem certeza que quer apagar todos os gastos?")) return;
+        if (!confirm("Tem certeza que deseja apagar a lista de gastos?")) return;
 
         try {
             const response = await fetch(`http://127.0.0.1:8000/gastos/`, {
@@ -66,6 +68,15 @@ function Gastos() {
         console.error("Erro de rede:", error);
     };
     }
+
+    const gastosFiltrados = [...gastos].sort((a, b) => {
+        if (ordem === "maior") {
+            return b.valor - a.valor;
+        } else if (ordem === "menor") {
+            return a.valor - b.valor;
+        }
+        return 0;
+    });
 
     return(
         <div className="page-content">
@@ -97,8 +108,16 @@ function Gastos() {
             </select>
             <button onClick={adicionarGasto}>Adicionar</button>
 
+            <p>Filtrar por preço:</p>
+            <select value={ordem} onChange={(e) => setOrdem(e.target.value)}>
+                <option value="recente">Mais recentes</option>
+                <option value="menor">Menor valor</option>
+                <option value="maior">Maior valor</option>
+
+            </select>
+
             <ul>
-                {gastos.map((gasto) => (
+                {gastosFiltrados.map((gasto) => (
                     <li key={gasto.id}>
                         {gasto.nome} — R${gasto.valor} — {gasto.gastoCategoria}
                         <button onClick={() => removerGasto(gasto.id)}>❌</button>
@@ -107,7 +126,8 @@ function Gastos() {
                 ))}
             </ul>
             <p>Total em gastos: R${totalGastos.toFixed(2)}</p>
-            <button onClick={() => limparLista()}>Limpar lista</button>
+            <button onClick={() => limparLista()}>Limpar lista de gastos</button>
+
 
             
         </div>
