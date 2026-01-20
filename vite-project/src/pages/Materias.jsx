@@ -4,6 +4,8 @@ function Materias() {
     const [materias, setMaterias] = useState([]);
     const [nomeMateria, setNomeMateria] = useState("");
     const [dificuldade, setDificuldade] = useState("Baixa");
+    const [classeMateria, setClasseMateria] = useState("Trabalho");
+    const [dataFinal, setDataFinal] = useState("");
     const [filtro, setFiltro] = useState("Todas")
 
     useEffect(() => {
@@ -19,7 +21,9 @@ function Materias() {
         const novaMateria = {
             id: Date.now(),
             nome: materiaFormatada,
-            Materiadificuldade: dificuldade
+            Materiadificuldade: dificuldade,
+            classe: classeMateria,
+            dataFinal: dataFinal
             
         };
 
@@ -87,6 +91,22 @@ function Materias() {
             <option value="Alta">Alta</option>
             </select>
 
+            <label>Classe</label>
+            <select
+                value={classeMateria}
+                onChange={(e) => setClasseMateria(e.target.value)}>
+                <option value="Trabalho">Trabalho</option>
+                <option value="Prova">Prova</option>
+            </select>
+
+            <label>Data de Entrega</label>
+            <input
+                type="date"
+                value={dataFinal}
+                onChange={(e) => setDataFinal(e.target.value)}
+            />
+
+
             <button onClick={adicionarMateria}>
                 Adicionar
             </button>
@@ -103,7 +123,7 @@ function Materias() {
             <ul>
                 {materiasFiltradas.map((materia) => (
                     <li key={materia.id}>
-                        {materia.nome} — {materia.Materiadificuldade}
+                        {materia.nome} — {materia.Materiadificuldade} — {materia.classe} — {materia.dataFinal}
                         <button onClick={() => removerMateria(materia.id)}>
                             ❌
                         </button>

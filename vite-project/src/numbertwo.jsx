@@ -7,8 +7,8 @@ function Header() {
             <h2 className="logo">App</h2>
             <nav className="nav-links">
                 <Link to="/">Dashboard</Link>
-                <Link to="/materias">Matérias</Link>
                 <Link to="/calendario">Calendário</Link>
+                <Link to="/materias">Matérias</Link>
                 <Link to="/gastos">Gastos</Link>
                 <Link to="/humor">Humor</Link>
             </nav>

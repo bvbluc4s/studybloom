@@ -119,7 +119,7 @@ function Gastos() {
             <ul>
                 {gastosFiltrados.map((gasto) => (
                     <li key={gasto.id}>
-                        {gasto.nome} — R${gasto.valor} — {gasto.gastoCategoria}
+                        {gasto.nome} — R${gasto.valor.toFixed(2)} — {gasto.gastoCategoria}
                         <button onClick={() => removerGasto(gasto.id)}>❌</button>
 
                     </li>

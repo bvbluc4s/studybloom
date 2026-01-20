@@ -11,6 +11,8 @@ cursor = conn.cursor()
 conn2 = sqlite3.connect("materias.db", check_same_thread=False)
 cursor2 = conn2.cursor()
 
+# GASTOS
+
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS gastos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,13 +22,17 @@ CREATE TABLE IF NOT EXISTS gastos (
 )
 """)
 
+# MATERIAS
+
 cursor2.execute("""
 CREATE TABLE IF NOT EXISTS materias (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
-                Materiadificuldade TEXT NOT NULL
-                 )
-                """)
+                Materiadificuldade TEXT NOT NULL,
+                classe TEXT NOT NULL,
+                dataFinal TEXT NOT NULL
+)
+""")
 
 conn.commit()
 conn2.commit()
@@ -48,7 +54,7 @@ gastos = []
 
 @app.get("/materias")
 def listar_materias():
-    cursor2.execute("SELECT id, nome, Materiadificuldade FROM materias")
+    cursor2.execute("SELECT id, nome, Materiadificuldade, classe, dataFinal FROM materias")
     rows = cursor2.fetchall()
 
     return [
@@ -56,6 +62,8 @@ def listar_materias():
             "id": row[0],
             "nome": row[1],
             "Materiadificuldade": row[2],
+            "classe": row[3],
+            "dataFinal": row[4]
 
         }
         for row in rows
@@ -64,15 +72,17 @@ def listar_materias():
 @app.post("/materias")
 def criar_materia(materia: dict):
     cursor2.execute(
-        "INSERT INTO materias (nome, Materiadificuldade) VALUES (?, ?)",
-        (materia["nome"], materia["Materiadificuldade"])
+        "INSERT INTO materias (nome, Materiadificuldade, classe, dataFinal) VALUES (?, ?, ?, ?)",
+        (materia["nome"], materia["Materiadificuldade"], materia["classe"], materia["dataFinal"])
     )
     conn2.commit()
 
     return {
         "id": cursor2.lastrowid,
         "nome": materia["nome"],
-        "Materiadificuldade": materia["Materiadificuldade"]
+        "Materiadificuldade": materia["Materiadificuldade"],
+        "classe": materia["classe"],
+        "dataFinal": materia["dataFinal"]
     }
 
 @app.delete("/materias/{materia_id}")
