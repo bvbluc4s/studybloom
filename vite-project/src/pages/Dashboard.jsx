@@ -1,5 +1,4 @@
 function Dashboard() {
-
     
     return (
         <div className="page-content">
