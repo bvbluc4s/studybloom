@@ -1,18 +1,15 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+import { useData } from './DataContext'
 
 function Gastos() {
 
-    const [gastos, setGastos] = useState([]);
+    const { gastos, setGastos } = useData();
+
     const [nomeGasto, setNomeGasto] = useState("");
     const [valorGasto, setValor] = useState(0);
     const [categoria, setCategoria] = useState("Transporte");
     const [ordem, setOrdem] = useState("recente")
 
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/gastos")
-        .then(response => response.json())
-        .then(data => setGastos(data));
-    }, []);
 
     async function adicionarGasto() {
     if (nomeGasto.trim() === "") return;

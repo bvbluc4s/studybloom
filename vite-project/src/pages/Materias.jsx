@@ -1,18 +1,15 @@
 import { useState, useEffect } from "react";
+import { useData } from './DataContext';
 
 function Materias() {
-    const [materias, setMaterias] = useState([]);
+    const { materias, setMaterias } = useData();
+
     const [nomeMateria, setNomeMateria] = useState("");
     const [dificuldade, setDificuldade] = useState("Baixa");
     const [classeMateria, setClasseMateria] = useState("Trabalho");
     const [dataFinal, setDataFinal] = useState("");
     const [filtro, setFiltro] = useState("Todas")
 
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/materias")
-        .then(response => response.json())
-        .then(data => setMaterias(data));
-    }, []);
 
     async function adicionarMateria() {
         if (nomeMateria.trim() === "") return;

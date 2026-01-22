@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # GASTOS BANCO DE DADOS
 conn = sqlite3.connect("gastos.db", check_same_thread=False)
