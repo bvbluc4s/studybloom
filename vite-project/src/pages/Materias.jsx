@@ -8,7 +8,8 @@ function Materias() {
     const [dificuldade, setDificuldade] = useState("Baixa");
     const [classeMateria, setClasseMateria] = useState("Trabalho");
     const [dataFinal, setDataFinal] = useState("");
-    const [filtro, setFiltro] = useState("Todas")
+    const [filtroDificuldade, setFiltroDificuldade] = useState("Todas")
+    const [filtroCategoria, setFiltroCategoria] = useState("Todas")
 
 
     async function adicionarMateria() {
@@ -62,8 +63,17 @@ function Materias() {
     }
 
     const materiasFiltradas = materias.filter(item => {
-        if (filtro === "Todas") return true;
-        return item.Materiadificuldade === filtro;
+
+        const bateDificuldade = filtroDificuldade === "Todas" || item.Materiadificuldade === filtroDificuldade;
+        const bateClasse = filtroCategoria === "Todas" || item.classe === filtroCategoria;
+        return bateDificuldade && bateClasse;
+
+    });
+
+    const categoriasFiltradas = materias.filter(item => {
+        if (filtroCategoria === "Todas") return true;
+        return item.classe === filtroCategoria;
+        
     })
 
     return (
@@ -109,12 +119,19 @@ function Materias() {
             </button>
 
             <p>Filtrar por dificuldade: </p>
-            <select value={filtro} onChange={(e) => setFiltro(e.target.value)}>
+            <select value={filtroDificuldade} onChange={(e) => setFiltroDificuldade(e.target.value)}>
                 <option value="Todas">Mostrar Todas</option>
                 <option value="Baixa">Baixa</option>
                 <option value="Média">Média</option>
                 <option value="Alta">Alta</option>
 
+            </select>
+
+            <p>Filtrar por categoria: </p>
+            <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
+                <option value="Todas">Todas</option>
+                <option value="Trabalho">Trabalho</option>
+                <option value="Prova">Prova</option>
             </select>
 
             <ul>
